@@ -1,5 +1,4 @@
 require 'pry'
-sum = 0
 
 def welcome
   puts "Welcome to the Blackjack Table"
@@ -9,8 +8,8 @@ def deal_card
   rand(1..11)
 end
 
-def display_card_total(num)
-  puts "Your cards add up to #{num}"
+def display_card_total(sum)
+  puts "Your cards add up to #{sum}"
 end
 
 def prompt_user
@@ -32,13 +31,14 @@ def initial_round
 end
 
 def hit?(sum)
-  puts prompt_user
-  if get_user_input == 'h'
+  prompt_user
+  input = get_user_input
+  if input == 'h'
     sum += deal_card
-  elsif get_user_input =='s'
-    prompt_user
-  else 
+  elsif input == 's'
+  else
     invalid_command
+    hit?(sum)
   end
   sum
 end
@@ -53,6 +53,12 @@ end
 #####################################################
 
 def runner
-  # code runner here
+  welcome 
+  sum = initial_round
+  while sum < 21 do
+    sum = hit?(sum)
+    display_card_total(sum)
+  end
+  end_game(sum)
 end
     
